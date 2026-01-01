@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+// import { environment } from 'src/environments';
 import { CustomHttpResponse } from '../model/custom-http-response';
 import { User } from '../model/user';
 
@@ -10,7 +10,7 @@ import { User } from '../model/user';
 })
 export class UserService {
 
-  private host = environment.apiUrl;
+  private host = 'http://localhost:8081';
 
   constructor(private http: HttpClient) { }
 

@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faEdit, faPlus, faSync, faTrash, faEnvelope, faShieldAlt, faIdBadge, faSignInAlt, faLock, faUnlock, faCogs, faUsers, faUser, faCamera } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { NotificationType } from 'src/app/enum/notification-type.enum';
 import { Role } from 'src/app/enum/role.enum';
@@ -21,20 +22,20 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class UserComponent implements OnInit, OnDestroy {
 
-  faEdit = faEdit;
-  faTrash = faTrash;
-  faPlus = faPlus;
-  faSync = faSync;
-  faEnvelope = faEnvelope;
-  faShieldAlt = faShieldAlt;
-  faIdBadge = faIdBadge;
-  faSignInAlt = faSignInAlt;
-  faLock = faLock;
-  faUnlock = faUnlock;
-  faCogs = faCogs;
-  faUsers = faUsers;
-  faUser = faUser;
-  faCamera = faCamera;
+  faEdit = faEdit as IconProp;
+  faTrash = faTrash as IconProp;
+  faPlus = faPlus as IconProp;
+  faSync = faSync as IconProp;
+  faEnvelope = faEnvelope as IconProp;
+  faShieldAlt = faShieldAlt as IconProp;
+  faIdBadge = faIdBadge as IconProp;
+  faSignInAlt = faSignInAlt as IconProp;
+  faLock = faLock as IconProp;
+  faUnlock = faUnlock as IconProp;
+  faCogs = faCogs as IconProp;
+  faUsers = faUsers as IconProp;
+  faUser = faUser as IconProp;
+  faCamera = faCamera as IconProp;
 
 
 

@@ -8,6 +8,7 @@ import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { NotificationService } from 'src/app/service/notification.service';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public showLoading: boolean = false;
   private subscriptions: Subscription[] = [];
-  public faSpinner = faSpinner;
+  public faSpinner = faSpinner as IconProp;
 
 
 

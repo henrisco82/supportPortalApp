@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, of } from 'rxjs';
-import { environment } from 'src/environments/environment';
+// import { environment } from 'src/environments';
 import { User } from '../model/user';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { User } from '../model/user';
 })
 export class AuthService {
 
-  public host: string = environment.apiUrl;
+  public host: string = 'http://localhost:8081';
   private token: string | null = "";
   private loggedInUsername: string | null = "";
   private jwtHelper = new JwtHelperService();

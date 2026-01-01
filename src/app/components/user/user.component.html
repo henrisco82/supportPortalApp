@@ -53,7 +53,7 @@
       aria-selected="false"
       (click)="changeTitle('Profile')"
     >
-      Welcome, {{ user?.firstName }}
+      Welcome, {{ user.firstName }}
       <fa-icon [icon]="faUser"></fa-icon>
     </button>
   </li>
@@ -94,7 +94,7 @@
           &nbsp;
           <button type="button" class="btn btn-info" (click)="getUsers(true)">
             <fa-icon *ngIf="!refreshing" [icon]="faSync"></fa-icon>
-            <fa-icon *ngIf="refreshing" [spin]="true" [icon]="faSync"></fa-icon>
+            <fa-icon *ngIf="refreshing" animation="spin" [icon]="faSync"></fa-icon>
           </button>
         </span>
       </div>
@@ -119,15 +119,15 @@
             <img
               height="40"
               width="40"
-              src="{{ appUser?.profileImageUrl }}"
+              src="{{ appUser.profileImageUrl }}"
               alt=""
             />
           </td>
-          <td (click)="onSelectUser(appUser)">{{ appUser?.userId }}</td>
-          <td (click)="onSelectUser(appUser)">{{ appUser?.firstName }}</td>
-          <td (click)="onSelectUser(appUser)">{{ appUser?.lastName }}</td>
-          <td (click)="onSelectUser(appUser)">{{ appUser?.username }}</td>
-          <td (click)="onSelectUser(appUser)">{{ appUser?.email }}</td>
+          <td (click)="onSelectUser(appUser)">{{ appUser.userId }}</td>
+          <td (click)="onSelectUser(appUser)">{{ appUser.firstName }}</td>
+          <td (click)="onSelectUser(appUser)">{{ appUser.lastName }}</td>
+          <td (click)="onSelectUser(appUser)">{{ appUser.username }}</td>
+          <td (click)="onSelectUser(appUser)">{{ appUser.email }}</td>
           <td>
             <div
               class="btn-group"
@@ -135,14 +135,14 @@
               aria-label="Basic mixed styles example"
             >
               <button
-                [hidden]="!appUser?.active"
+                [hidden]="!appUser.active"
                 type="button"
                 class="btn btn-success btn-sm"
               >
                 Active
               </button>
               <button
-                [hidden]="appUser?.active"
+                [hidden]="appUser.active"
                 type="button"
                 class="btn btn-danger btn-sm"
               >
@@ -204,8 +204,8 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">
-                    {{ selectedUser?.firstName }}
-                    {{ selectedUser?.lastName }}
+                    {{ selectedUser.firstName }}
+                    {{ selectedUser.lastName }}
                   </h5>
                   <button
                     type="button"
@@ -233,8 +233,8 @@
                                   class="rounded"
                                   height="120"
                                   width="120"
-                                  src="{{ selectedUser?.profileImageUrl }}"
-                                  alt="{{ selectedUser?.firstName }}"
+                                  src="{{ selectedUser.profileImageUrl }}"
+                                  alt="{{ selectedUser.firstName }}"
                                 />
                               </div>
                             </div>
@@ -249,31 +249,31 @@
                           >
                             <div class="text-center text-sm-left mb-sm-0">
                               <h6 class="pt-sm-2 pb-1 mb-0 text-nowrap">
-                                {{ selectedUser?.firstName }}
-                                {{ selectedUser?.lastName }}
+                                {{ selectedUser.firstName }}
+                                {{ selectedUser.lastName }}
                               </h6>
-                              <p class="mb-1">{{ selectedUser?.username }}</p>
+                              <p class="mb-1">{{ selectedUser.username }}</p>
                               <div>
                                 Status:
                                 <span
-                                  [hidden]="!selectedUser?.active"
+                                  [hidden]="!selectedUser.active"
                                   class="badge bg-success"
                                   >Active</span
                                 >
                                 <span
-                                  [hidden]="selectedUser?.active"
+                                  [hidden]="selectedUser.active"
                                   class="badge bg-danger"
                                   >Inactive</span
                                 >
                               </div>
                               <div
-                                *ngIf="selectedUser?.lastLoginDateDisplay"
+                                *ngIf="selectedUser.lastLoginDateDisplay"
                                 class="text-muted"
                               >
                                 <small
                                   >Last Login:
                                   {{
-                                    selectedUser?.lastLoginDateDisplay
+                                    selectedUser.lastLoginDateDisplay
                                       | date: "medium"
                                   }}
                                 </small>
@@ -283,7 +283,7 @@
                                   <small
                                     >Joined:
                                     {{
-                                      selectedUser?.joinDate | date: "medium"
+                                      selectedUser.joinDate | date: "medium"
                                     }}
                                   </small>
                                 </div>
@@ -299,34 +299,34 @@
                             class="float-end"
                             [icon]="faIdBadge"
                           ></fa-icon>
-                          {{ selectedUser?.userId }}
+                          {{ selectedUser.userId }}
                         </li>
                         <li class="list-group-item">
                           <fa-icon
                             class="float-end"
                             [icon]="faEnvelope"
                           ></fa-icon
-                          >{{ selectedUser?.email }}
+                          >{{ selectedUser.email }}
                         </li>
                         <li class="list-group-item">
                           <fa-icon
                             class="float-end"
                             [icon]="faShieldAlt"
                           ></fa-icon
-                          >{{ selectedUser?.role?.substring(5) }}
+                          >{{ selectedUser.role.substring(5) }}
                         </li>
                         <li
-                          *ngIf="selectedUser?.lastLoginDateDisplay"
+                          *ngIf="selectedUser.lastLoginDateDisplay"
                           class="list-group-item"
                         >
                           <fa-icon
                             class="float-end"
                             [icon]="faSignInAlt"
                           ></fa-icon
-                          >{{ selectedUser?.lastLoginDateDisplay }}
+                          >{{ selectedUser.lastLoginDateDisplay }}
                         </li>
                         <li class="list-group-item">
-                          <span [hidden]="selectedUser?.notLocked">
+                          <span [hidden]="selectedUser.notLocked">
                             <fa-icon
                               class="float-end"
                               [icon]="faLock"
@@ -334,7 +334,7 @@
                             ></fa-icon>
                             Account Locked
                           </span>
-                          <span [hidden]="!selectedUser?.notLocked">
+                          <span [hidden]="!selectedUser.notLocked">
                             <fa-icon
                               class="float-end"
                               [icon]="faLock"
@@ -535,7 +535,7 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="editUserModalLabel">
-                    Edit {{ editUser?.firstName }} {{ editUser?.lastName }}
+                    Edit {{ editUser.firstName }} {{ editUser.lastName }}
                   </h5>
                   <button
                     type="button"
@@ -703,7 +703,7 @@
           >
         </div>
         <button type="submit" [disabled]="false" class="btn btn-primary">
-          <fa-icon *ngIf="refreshing" [spin]="true" [icon]="faSync"></fa-icon>
+          <fa-icon *ngIf="refreshing" animation="spin" [icon]="faSync"></fa-icon>
           <span *ngIf="refreshing">Loading</span>
           <span *ngIf="!refreshing">Reset Password</span>
         </button>
@@ -725,44 +725,44 @@
                 <img
                   height="135"
                   width="135"
-                  src="{{ user?.profileImageUrl }}"
+                  src="{{ user.profileImageUrl }}"
                   alt=""
                   class="rounded"
                 />
                 <div
-                  *ngIf="fileStatus?.status === 'progress'"
+                  *ngIf="fileStatus.status === 'progress'"
                   class="mt-2 progress"
                 >
                   <div
                     class="progress-bar"
                     role="progressbar"
-                    [style.width.%]="fileStatus?.percentage"
+                    [style.width.%]="fileStatus.percentage"
                     style="width: 25%"
                     aria-valuenow="25"
                     aria-valuemin="0"
                     aria-valuemax="100"
                   >
-                    {{ fileStatus?.percentage }}
+                    {{ fileStatus.percentage }}
                   </div>
                 </div>
               </div>
               <div class="col mb-5">
                 <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">
-                  {{ user?.firstName }} {{ user?.lastName }}
+                  {{ user.firstName }} {{ user.lastName }}
                 </h4>
-                <p class="mb-0">{{ user?.username }}</p>
+                <p class="mb-0">{{ user.username }}</p>
                 <div
-                  *ngIf="user?.lastLoginDateDisplay !== null"
+                  *ngIf="user.lastLoginDateDisplay !== null"
                   class="text-muted"
                 >
                   <small
                     >Last login:
-                    {{ user?.lastLoginDateDisplay | date: "medium" }}</small
+                    {{ user.lastLoginDateDisplay | date: "medium" }}</small
                   >
                 </div>
-                <div *ngIf="user?.joinDate !== null" class="text-muted">
+                <div *ngIf="user.joinDate !== null" class="text-muted">
                   <small
-                    >Joined Date: {{ user?.joinDate | date: "medium" }}</small
+                    >Joined Date: {{ user.joinDate | date: "medium" }}</small
                   >
                 </div>
                 <div class="mt-2">
@@ -904,7 +904,7 @@
                 <h6 class="card-title">Permissions From Role</h6>
                 <ul class="list-group">
                   <li
-                    *ngFor="let authority of user?.authorities"
+                    *ngFor="let authority of user.authorities"
                     class="list-group-item"
                   >
                     {{ authority }}

@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { Subscription } from 'rxjs';
 import { NotificationType } from 'src/app/enum/notification-type.enum';
 import { User } from 'src/app/model/user';
@@ -17,7 +18,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   public showLoading: boolean = false;
   private subscriptions: Subscription[] = [];
-  public faSpinner = faSpinner;
+  public faSpinner = faSpinner as IconProp;
 
 
   constructor(
