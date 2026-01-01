@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/htt
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { faEdit, faPlus, faSync, faTrash, faEnvelope, faShieldAlt, faIdBadge, faSignInAlt, faLock, faUnlock, faCogs, faUsers, faUser, faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faPlus, faSync, faTrash, faEnvelope, faShieldAlt, faIdBadge, faSignInAlt, faLock, faUnlock, faCogs, faUsers, faUser, faCamera, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { NotificationType } from 'src/app/enum/notification-type.enum';
@@ -36,6 +36,7 @@ export class UserComponent implements OnInit, OnDestroy {
   faUsers = faUsers as IconProp;
   faUser = faUser as IconProp;
   faCamera = faCamera as IconProp;
+  faTimes = faTimes as IconProp;
 
 
 
@@ -46,6 +47,7 @@ export class UserComponent implements OnInit, OnDestroy {
   public refreshing: boolean = false;
   private subscriptions: Subscription[] = [];
   public selectedUser: User;
+  public selectedUserToDelete: User | undefined = undefined;
   public fileName: string | null = "";
   public profileImage: any;
   public editUser: User = new User();
@@ -162,10 +164,12 @@ export class UserComponent implements OnInit, OnDestroy {
 
   public onAddNewUser(userForm: NgForm): void{
     const formData = this.userService.CreateUserFormData(null, userForm.value, this.profileImage);
-    console.log(formData);
     this.subscriptions.push(this.userService.addUser(formData).subscribe(
       (response: User) => {
         this.clickButton('new-user-close');
+        // Add new user to local array immediately for better UX
+        this.users.unshift(response);
+        this.userService.addUsersToLocalCache(this.users);
         this.getUsers(false);
         this.fileName = null;
         this.profileImage = null;
@@ -180,10 +184,15 @@ export class UserComponent implements OnInit, OnDestroy {
 
   public onUpdateUser(): void {
     const formData = this.userService.CreateUserFormData(this.currentUsername, this.editUser, this.profileImage);
-    console.log(formData);
     this.subscriptions.push(this.userService.updateUser(formData).subscribe(
       (response: User) => {
         this.clickButton('edit-user-close');
+        // Update user in local array immediately for better UX
+        const index = this.users.findIndex(user => user.username === this.currentUsername);
+        if (index !== -1) {
+          this.users[index] = response;
+          this.userService.addUsersToLocalCache(this.users);
+        }
         this.getUsers(false);
         this.fileName = null;
         this.profileImage = null;
@@ -233,13 +242,58 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   public onDeleteUser(username: string): void{
+    // Find the user to check their role
+    const userToDelete = this.users.find(user => user.username === username);
+
+    if (userToDelete && userToDelete.role === Role.SUPER_ADMIN) {
+      this.sendNotification(NotificationType.ERROR, 'Super Admin cannot be deleted. This action is not allowed.');
+      return;
+    }
+
+    // Store the user for modal display and set up for deletion
+    this.selectedUserToDelete = userToDelete;
+
+    // Show the Bootstrap modal
+    const modalElement = document.getElementById('deleteUserModal');
+    if (modalElement) {
+      const modal = new (window as any).bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }
+
+  public confirmDeleteUser(): void {
+    if (!this.selectedUserToDelete) return;
+
+    const username = this.selectedUserToDelete.username;
+
     this.subscriptions.push(
       this.userService.deleteUser(username).subscribe(
         (response: CustomHttpResponse) => {
-          this.sendNotification(NotificationType.SUCCESS, response.message);
-          this.getUsers(true);
+          // Remove user from local array immediately for better UX
+          this.users = this.users.filter(user => user.username !== username);
+          // Update local cache
+          this.userService.addUsersToLocalCache(this.users);
+          // Show success message
+          this.sendNotification(NotificationType.SUCCESS, response?.message || 'User deleted successfully');
+          // Refresh from server to ensure consistency
+          this.getUsers(false);
+          this.selectedUserToDelete = undefined; // Clear selection
         },(errorResponse: HttpErrorResponse) => {
-          this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+          // Handle 404 and other errors gracefully
+          if(errorResponse.status === 404) {
+            // Check if this might be a Super Admin deletion attempt
+            const userToDelete = this.users.find(user => user.username === username);
+            if (userToDelete && userToDelete.role === Role.SUPER_ADMIN) {
+              this.sendNotification(NotificationType.ERROR, 'Super Admin cannot be deleted. This action is not allowed.');
+            } else {
+              this.sendNotification(NotificationType.ERROR, 'User not found or already deleted');
+            }
+          } else {
+            this.sendNotification(NotificationType.ERROR, errorResponse.error?.message || 'Failed to delete user');
+          }
+          // Refresh the list to ensure consistency
+          this.getUsers(false);
+          this.selectedUserToDelete = undefined; // Clear selection
         }
       )
     )

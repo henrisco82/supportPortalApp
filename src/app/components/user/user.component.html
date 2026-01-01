@@ -931,3 +931,42 @@
     accept="image/*"
   />
 </form>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="deleteUserModalLabel">
+          <fa-icon [icon]="faTrash" class="me-2"></fa-icon>
+          Confirm Deletion
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <fa-icon [icon]="faTrash" size="3x" class="text-danger mb-3"></fa-icon>
+        </div>
+        <h5 class="text-center mb-3">Are you sure you want to delete this user?</h5>
+        <div class="alert alert-warning">
+          <strong>Warning!</strong> This action cannot be undone. The user
+          <strong>{{ selectedUserToDelete?.firstName }} {{ selectedUserToDelete?.lastName }}</strong>
+          ({{ selectedUserToDelete?.username }}) will be permanently removed from the system.
+        </div>
+        <p class="text-muted text-center mb-0">
+          <small>All associated data will be lost.</small>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <fa-icon [icon]="faTimes" class="me-1"></fa-icon>
+          Cancel
+        </button>
+        <button type="button" class="btn btn-danger" (click)="confirmDeleteUser()" data-bs-dismiss="modal">
+          <fa-icon [icon]="faTrash" class="me-1"></fa-icon>
+          Delete User
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

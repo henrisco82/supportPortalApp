@@ -23,7 +23,6 @@ export class UserService {
   }
 
   public addUser(formData: FormData): Observable<User>{
-    console.log(formData);
     return this.http.post<User>(`${this.host}/user/add`, formData)
   }
 
@@ -45,6 +44,14 @@ export class UserService {
 
   public addUsersToLocalCache(users: User[]): void {
     localStorage.setItem('users', JSON.stringify(users));
+  }
+
+  public removeUserFromLocalCache(username: string): void {
+    const users = this.getUsersFromLocalCache();
+    if (users) {
+      const filteredUsers = users.filter(user => user.username !== username);
+      this.addUsersToLocalCache(filteredUsers);
+    }
   }
 
   public getUsersFromLocalCache(): User[] | null {
