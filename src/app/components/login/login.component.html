@@ -1,0 +1,65 @@
+<div class="card mt-5" style="width: 480px; margin: auto">
+  <h3 class="card-header">Login</h3>
+  <div class="card-body">
+    <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': usernameInput.touched && usernameInput.invalid
+          }"
+          #usernameInput="ngModel"
+          ngModel
+          required
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="usernameInput.invalid && usernameInput.touched"
+        >
+          <div *ngIf="usernameInput.errors?.required">Username is required</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': passwordInput.touched && passwordInput.invalid
+          }"
+          #passwordInput="ngModel"
+          ngModel
+          required
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="passwordInput.invalid && passwordInput.touched"
+        >
+          <div *ngIf="passwordInput.errors?.required">password is required</div>
+        </div>
+      </div>
+      <div class="mt-3 mb-3 d-grid gap-2">
+        <button
+          type="submit"
+          class="btn btn-info"
+          [disabled]="loginForm.invalid || showLoading"
+        >
+          <fa-icon
+            *ngIf="showLoading"
+            [spin]="true"
+            [icon]="faSpinner"
+          ></fa-icon>
+          <span *ngIf="showLoading"> Loading... </span>
+          <span *ngIf="!showLoading"> Login </span>
+        </button>
+      </div>
+    </form>
+    <p>Don't have an account? <a routerLink="/register">Sign Up</a></p>
+  </div>
+</div>

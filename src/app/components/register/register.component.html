@@ -1,0 +1,110 @@
+<div class="card mt-5" style="width: 480px; margin: auto">
+  <h3 class="card-header">Register</h3>
+  <div class="card-body">
+    <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm.value)">
+      <div class="mb-3">
+        <label for="firstName" class="form-label">First Name</label>
+        <input
+          type="text"
+          name="firstName"
+          id="firstName"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': firstNameInput.touched && firstNameInput.invalid
+          }"
+          #firstNameInput="ngModel"
+          ngModel
+          required
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="firstNameInput.invalid && firstNameInput.touched"
+        >
+          <div *ngIf="firstNameInput.errors?.required">
+            firstName is required
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Last Name</label>
+        <input
+          type="text"
+          name="lastName"
+          id="lastName"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': lastNameInput.touched && lastNameInput.invalid
+          }"
+          #lastNameInput="ngModel"
+          ngModel
+          required
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="lastNameInput.invalid && lastNameInput.touched"
+        >
+          <div *ngIf="lastNameInput.errors?.required">lastName is required</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': usernameInput.touched && usernameInput.invalid
+          }"
+          #usernameInput="ngModel"
+          ngModel
+          required
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="usernameInput.invalid && usernameInput.touched"
+        >
+          <div *ngIf="usernameInput.errors?.required">Username is required</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="text"
+          name="email"
+          id="email"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': emailInput.touched && emailInput.invalid
+          }"
+          #emailInput="ngModel"
+          ngModel
+          required
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="emailInput.invalid && emailInput.touched"
+        >
+          <div *ngIf="emailInput.errors?.required">email is required</div>
+        </div>
+      </div>
+
+      <div class="mt-3 mb-3 d-grid gap-2">
+        <button
+          type="submit"
+          class="btn btn-info"
+          [disabled]="registerForm.invalid || showLoading"
+        >
+          <fa-icon
+            *ngIf="showLoading"
+            [spin]="true"
+            [icon]="faSpinner"
+          ></fa-icon>
+          <span *ngIf="showLoading"> Loading... </span>
+          <span *ngIf="!showLoading"> Register </span>
+        </button>
+      </div>
+    </form>
+    <p>Already have an account? <a routerLink="/login">Login</a></p>
+  </div>
+</div>
