@@ -148,9 +148,35 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   public onEditUser(editUser: User): void {
-    this.editUser = editUser;
+    // Create a deep copy of the user to avoid modifying the original data
+    // until save is clicked
+    this.editUser = {
+      userId: editUser.userId,
+      firstName: editUser.firstName,
+      lastName: editUser.lastName,
+      username: editUser.username,
+      email: editUser.email,
+      password: editUser.password,
+      lastLoginDate: editUser.lastLoginDate,
+      lastLoginDateDisplay: editUser.lastLoginDateDisplay,
+      joinDate: editUser.joinDate,
+      profileImageUrl: editUser.profileImageUrl,
+      active: editUser.active,
+      notLocked: editUser.notLocked,
+      role: editUser.role,
+      authorities: [...editUser.authorities] // Deep copy array
+    };
     this.currentUsername = editUser.username;
     this.clickButton('openUserEdit');
+  }
+
+  public onCloseEditModal(): void {
+    // Clear the edit user data when closing without saving
+    this.editUser = new User();
+    this.currentUsername = '';
+    this.fileName = null;
+    this.profileImage = null;
+    this.clickButton('edit-user-close');
   }
 
   public onProfileImageChange(event: any): void{
@@ -196,6 +222,9 @@ export class UserComponent implements OnInit, OnDestroy {
         this.getUsers(false);
         this.fileName = null;
         this.profileImage = null;
+        // Reset edit user data
+        this.editUser = new User();
+        this.currentUsername = '';
         this.sendNotification(NotificationType.SUCCESS, `${response.firstName} ${response.lastName} updated successfully`);
       },(errorResponse: HttpErrorResponse) => {
         this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
